@@ -1,0 +1,143 @@
+<!doctype html>
+<html class="loginHtml">
+<head>
+    <meta charset="utf-8">
+    <title>登录 Learn and Habit</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="./template/img/learn.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./static/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="./static/css/public.css" media="all" />
+    <link rel="stylesheet" href="./static/css/jquery.toast.min.css" media="all" />
+    <style type="text/css">
+        .vaptcha-init-main {
+            display: table;
+            width: 100%;
+            height: 100%; background-color: #EEEEEE;
+        }
+
+        .vaptcha-init-loading {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center
+        }
+
+        .vaptcha-init-loading>a {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: none;
+        }
+
+        .vaptcha-init-loading>a img {
+            vertical-align: middle
+        }
+
+        .vaptcha-init-loading .vaptcha-text {
+            font-family: sans-serif;
+            font-size: 12px;
+            color: #CCCCCC;
+            vertical-align: middle
+        }
+    </style>
+</head>
+<body class="loginBody" style="background-color: black">
+<iframe src="./loginCav.html" style="width: 100%;height: 99%" frameborder="0"></iframe>
+<form class="layui-form" id="loginform" style="opacity: 0.9;">
+    <div class="login_face" style="text-align: center">
+        <button type="button" style="position: absolute; background: none; border: none; width: 40px; height: 20px; line-height: 30px; left: 50%; transform: translateX(-50%); top: 20px;"></button>
+        <img src="./static/img/logo.png" class="userAvatar">
+    </div>
+    <div class="layui-form-item input-item">
+        <label for="userName">用户名</label>
+        <input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" class="layui-input" name="username" lay-verify="required" lay-verType="tips">
+    </div>
+    <div class="layui-form-item input-item">
+        <label for="password">密码</label>
+        <input type="password" lay-verType="tips" name="password" placeholder="请输入密码" autocomplete="off" id="password" class="layui-input" lay-verify="required">
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn layui-block" id="btn" lay-filter="login" lay-submit>登录</button>
+    </div>
+</form>
+<script type="text/javascript" src="./static/js/jquery.min.js"></script>
+<script type="text/javascript" src="./static/layui/layui.js"></script>
+<script type="text/javascript" src="./static/js/jquery.toast.min.js"></script>
+<script type="text/javascript" src="./static/js/alert.js"></script>
+<script type="text/javascript">
+    layui.use(['form','layer','jquery'],function(){
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer;
+        //登录按钮
+        //layer.alert("账号：<span style='color: #01AAED'>testdemo</span><br>密码：<span style='color: #dd4444'>123456</span>");
+        form.on("submit(login)",function(data){
+            var d = new Date();
+            var month = d.getMonth() + 1; //月份
+            var year = d.getFullYear(); //年份
+            var b = new Date(year, month, 0);
+            $("#codeImg").click();
+            var _this = $(data.elem);
+            _this.text("登录中...").attr("disabled","disabled").addClass("layui-btn-disabled");
+            var status = isLogin($("#userName").val(), $("#password").val());
+            if(1 == status){
+                toast('登陆成功','Success',0);
+                checkCookie("loginsuijishu", Math.random().toString(36).substr(2), "d"+b.getDate());
+                setTimeout(function(){
+                    if(getCookie("loginsuijishu") != ""){
+                        var str = "./index.html?suijishu="+getCookie("loginsuijishu");
+                        window.location.href = str.replace(/\s/g, "");
+                    }                    
+                },1000);
+            }else{
+                _this.text("登录").removeClass("layui-btn-disabled").prop('disabled',false);
+                toast('用户名或密码不正确！', 202);
+            }
+            return false;
+        });
+        //表单输入效果
+        $(".loginBody .input-item").click(function(e){
+            e.stopPropagation();
+            $(this).addClass("layui-input-focus").find(".layui-input").focus();
+        });
+        $(".loginBody .layui-form-item .layui-input").focus(function(){
+            $(this).parent().addClass("layui-input-focus");
+        });
+        $(".loginBody .layui-form-item .layui-input").blur(function(){
+            $(this).parent().removeClass("layui-input-focus");
+            if($(this).val() != ''){
+                $(this).parent().addClass("layui-input-active");
+            }else{
+                $(this).parent().removeClass("layui-input-active");
+            }
+        })
+        function isLogin(name, pass){
+            var d = new Date();
+            //月份
+            var month = d.getMonth() + 1;
+            //年份
+            var year = d.getFullYear();
+
+            var b = new Date(year, month, 0);
+            checkCookie("iszhuce", false, "d"+b.getDate());
+            if(getCookie("iszhuce")){
+                checkCookie("loginname", name, "d"+b.getDate());
+                checkCookie("loginpass", pass, "d"+b.getDate());
+            }
+
+            if(name == getCookie("loginname")){
+                if(pass == getCookie("loginpass")){
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+    });
+</script>
+<!--<script type="text/javascript" src="/Public/static/js/bg.js"></script>-->
+</body>
+</html>
