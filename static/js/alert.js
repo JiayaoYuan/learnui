@@ -111,7 +111,7 @@ function getsec(str)
    }
 }
 
-$("#reg").click(function(){    
+$("#reg button").click(function(){
     if(getCookie("loginname") == "" && getCookie("loginpass") == ""){
         var d = new Date();
         //月份
