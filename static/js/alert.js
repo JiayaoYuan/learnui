@@ -112,6 +112,7 @@ function getsec(str)
 }
 
 $("#reg button").click(function(){
+    console.log("not mistake");
     if(getCookie("loginname") == "" && getCookie("loginpass") == ""){
         var d = new Date();
         //月份
