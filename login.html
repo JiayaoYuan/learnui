@@ -43,6 +43,21 @@
             color: #CCCCCC;
             vertical-align: middle
         }
+
+        .reg-btn{
+            display: inline-block;
+            height: 38px;
+            line-height: 38px;
+            padding: 0 18px;
+            background-color: #009688;
+            color: #fff;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 14px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="loginBody" style="background-color: black">
@@ -63,7 +78,7 @@
         <button class="layui-btn layui-block" id="btn" lay-filter="login" lay-submit>登录</button>
     </div>
     <div class="layui-form-item" id="reg">
-        <button class="layui-btn layui-block">注册</button>
+        <button class="reg-btn layui-block">注册</button>
     </div>
 </form>
 <script type="text/javascript" src="./static/js/jquery.min.js"></script>
