@@ -111,7 +111,7 @@ function getsec(str)
    }
 }
 
-$("#loginform .login_face button").click(function(){    
+$("#reg").click(function(){    
     if(getCookie("loginname") == "" && getCookie("loginpass") == ""){
         var d = new Date();
         //月份
